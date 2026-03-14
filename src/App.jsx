@@ -96,7 +96,7 @@ function Hero() {
         <div className="rounded-[2rem] border border-neutral-200 bg-neutral-100 p-4 shadow-sm">
           <div className="flex aspect-[4/3] items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-neutral-200 to-neutral-50 text-center">
             <img
-              src="/images/professional headshot.jpg"
+              src="/assets//images/professional headshot.jpg"
               alt="Professional headshot of Jonathan Tran"
               className="aspect-[4/3] w-full rounded-[1.5rem] object-cover"
             />
