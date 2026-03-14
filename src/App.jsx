@@ -32,7 +32,7 @@ function Navbar() {
           Jonathan Tran
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm text-neutral-600">
+        <nav className="flex items-center gap-7 text-xl text-neutral-600">
           <Link to="/" className="transition hover:text-black">Home</Link>
           <Link to="/projects" className="transition hover:text-black">Projects</Link>
           <Link to="/about" className="transition hover:text-black">About</Link>
@@ -50,9 +50,7 @@ function Layout({ children }) {
       <main>{children}</main>
       <footer className="mt-20 border-t border-black/5">
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <h3 className="text-xl font-semibold">Jonathan Tran</h3>
-          <p className="mt-2 text-sm text-neutral-600">Design. Build. Improve.</p>
-          <p className="mt-6 text-sm text-neutral-500">© 2026 Jonathan Tran. All rights reserved.</p>
+          <h3 className="text-l font-semibold">Made by Jonathan Tran</h3>
         </div>
       </footer>
     </div>
@@ -61,19 +59,22 @@ function Layout({ children }) {
 
 function Hero() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
-      <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+    <section className="mx-auto max-w-6xl px-6 py-8 md:py-12">
+      <div className="grid items-center gap-22 md:grid-cols-[1.1fr_0.9fr]">
         <div>
           <p className="text-sm font-medium uppercase tracking-[0.25em] text-neutral-500">
-            Engineering Portfolio
+            Mechanical Engineering
           </p>
           <h1 className="mt-5 text-5xl font-semibold tracking-tight text-neutral-950 md:text-7xl">
-            Design. Build. Improve.
+            Engineering Portfolio:
+          </h1>
+          <h1 className="mt-4 text-5xl font-semibold tracking-tight text-neutral-950 md:text-7xl">
+            Jonathan Tran
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600">
-            Welcome to my portfolio showcasing engineering work across CAD,
-            manufacturing, robotics, and research. I focus on building practical
-            systems with strong attention to detail and real-world execution.
+            Welcome to my portfolio showcasing various engineering projects I 
+            have worked on. I am interested in manufacturing and aerospace 
+            industries where I can contribute to meaningful projects.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -99,13 +100,7 @@ function Hero() {
               alt="Professional headshot of Jonathan Tran"
               className="aspect-[4/3] w-full rounded-[1.5rem] object-cover"
             />
-            <div className="max-w-xs px-6">
-              <p className="text-sm uppercase tracking-[0.22em] text-neutral-500">
-                Featured Visual
-              </p>
-              <h2 className="mt-4 text-2xl font-semibold text-neutral-900">
-                Add a headshot, CAD render, or project photo here
-              </h2>
+            <div className="max-w-xs px-0">
             </div>
           </div>
         </div>
@@ -154,7 +149,7 @@ function Home() {
 function Projects() {
   return (
     <Layout>
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-6 py-10">
         <h1 className="text-5xl font-semibold tracking-tight">Projects</h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-neutral-600">
           A selection of projects in manufacturing, CAD, robotics, and research.
@@ -236,18 +231,28 @@ function ArmsLabProject() {
 function About() {
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-20">
+      <section className="mx-auto max-w-4xl px-6 py-10">
         <h1 className="text-5xl font-semibold tracking-tight">About</h1>
         <p className="mt-8 text-lg leading-8 text-neutral-600">
-          I am a mechanical engineering student focused on CAD, manufacturing,
-          robotics, and hands-on engineering work. I enjoy building projects
-          that combine design thinking with practical implementation.
+          Currently pursuing a B.S. in Mechanical Engineering at UC Davis, with an expected graduation in June 2027. 
+          I love to build things and design my way through solving real world problems! I am interested in 
+          manufacturing and aerospace industries where I can work on meaningful projects.
         </p>
         <p className="mt-6 text-lg leading-8 text-neutral-600">
-          My experience includes student leadership, prototyping, engineering
-          research, and process-oriented project work. I’m especially interested
-          in roles where I can keep developing my technical skills while working
-          on real systems.
+          As a Manufacturing Engineer at the ARMS Laboratory at UC Davis, I support the research lab by assisting in 
+          the development of CNC automation processes and optimizing machining controls. Additionally, I support 
+          the Drivetrain subteam as a Powertrain Mechanical Engineer at Formula Racing at UC Davis through 
+          planetary gearbox design and motor component/design drawing analysis using SolidWorks! I am skilled in 
+          SolidWorks and Autodesk Fusion 360, with a strong foundation in engineering principles and a focus on 
+          innovation in manufacturing systems.
+        </p>
+        <p className="mt-6 text-lg leading-8 text-neutral-600">
+          I am currently seeking mechanical engineering internship opportunities where I can grow my skills in 
+          designing, prototyping, and manufacturing. As a motivated student, I am excited to learn through hands-on 
+          experiences and in a teamwork setting.
+        </p>
+        <p className="mt-6 text-lg leading-8 text-neutral-600">
+          Incoming Manufacturing Engineering Intern @ Pivotal - Summer 2026
         </p>
       </section>
     </Layout>
@@ -264,7 +269,7 @@ function Files() {
 
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-20">
+      <section className="mx-auto max-w-4xl px-6 py-10">
         <h1 className="text-5xl font-semibold tracking-tight">Contact</h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-neutral-600">
           Feel free to reach out via email or explore the links below.
