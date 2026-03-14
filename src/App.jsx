@@ -95,7 +95,7 @@ function Hero() {
         <div className="rounded-[2rem] border border-neutral-200 bg-neutral-100 p-4 shadow-sm">
           <div className="flex aspect-[4/3] items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-neutral-200 to-neutral-50 text-center">
             <img
-              src="/professional headshot.jpg"
+              src="/images/professional headshot.jpg"
               alt="Professional headshot of Jonathan Tran"
               className="aspect-[4/3] w-full rounded-[1.5rem] object-cover"
             />
@@ -256,7 +256,7 @@ function About() {
 
 function Files() {
   const contact = [
-    { name: "Resume", url: "/Jonathan Tran Resume.pdf" },
+    { name: "Resume", url: "/documents/Jonathan Tran Resume.pdf" },
     { name: "LinkedIn Profile", url: "https://www.linkedin.com/in/jonathan-tran-588049229/" },
   ];
 
