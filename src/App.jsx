@@ -57,8 +57,7 @@ function Layout({ children }) {
       <footer className="mt-20 border-t border-black/5">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h3 className="text-xl font-semibold">Jonathan Tran</h3>
-          <p className="mt-2 text-sm text-neutral-600">Design. Build. Improve.</p>
-          <p className="mt-6 text-sm text-neutral-500">© 2026 Jonathan Tran. All rights reserved.</p>
+          <p className="mt-2 text-sm text-neutral-600">Mechanical Engineering Portfolio</p>
         </div>
       </footer>
     </div>
@@ -67,14 +66,14 @@ function Layout({ children }) {
 
 function Hero() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+    <section className="mx-auto max-w-6xl px-6 py-20 md:py-16">
       <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <p className="text-sm font-medium uppercase tracking-[0.25em] text-neutral-500">
-            Engineering Portfolio
+          <p className="text-xl font-xl uppercase tracking-[0.25em] text-neutral-500">
+            Mechanical Engineering
           </p>
           <h1 className="mt-5 text-5xl font-semibold tracking-tight text-neutral-950 md:text-7xl">
-            Design. Build. Innovate.
+            Jonathan Tran's Engineering Portfolio
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600">
             Welcome to my portfolio showcasing engineering work across CAD,
