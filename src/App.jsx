@@ -1,9 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import professionalHeadshot from "./assets/images/professional-headshot.jpg";
-import gyroscopeFullAssemblyView from "./assets/images/Gyroscope/Gyroscope-Full-Assembly-View.jpg";
-import gyroscopeExplodedView from "./assets/images/Gyroscope/Gyroscope Assembly Exploded View.jpg";
-import gyroscopeSpinning from "./assets/images/Gyroscope/Gyroscope Spinning.jpg";
-import gyroscopeSpinoff from "./assets/images/Gyroscope/Gyroscope Spinoff.jpg";
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+
+import { gyroscopeImages } from "./assets/projects/gyroscope";
 
 const featuredProjects = [
   {
@@ -34,11 +32,11 @@ function Navbar() {
   return (
     <header className="border-b border-black/5 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Link to="/" className="text-lg font-semibold tracking-tight text-neutral-900">
+        <Link to="/" className="text-2xl font-semibold tracking-tight text-neutral-900">
           Jonathan Tran
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm text-neutral-600">
+        <nav className="flex items-center gap-7 text-md text-neutral-600">
           <Link to="/" className="transition hover:text-black">Home</Link>
           <Link to="/projects" className="transition hover:text-black">Projects</Link>
           <Link to="/about" className="transition hover:text-black">About</Link>
@@ -78,8 +76,10 @@ function Hero() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600">
             Welcome to my portfolio showcasing engineering work across CAD,
-            manufacturing, robotics, and research. I focus on building practical
-            systems with strong attention to detail and real-world execution.
+            manufacturing, and research. I love to build things and design my 
+            way through solving real world problems! I am interested in 
+            manufacturing and aerospace industries where I can work on 
+            meaningful projects.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -114,28 +114,41 @@ function Hero() {
 
 function ProjectCard({ project }) {
   return (
-    <article className="overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+    <Link
+      to={`/projects/${project.slug}`}
+      className="group block h-full"
+    >
+      <article className="flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+        <div className="relative overflow-hidden bg-white p-4">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="aspect-[16/16] w-full object-cover transition duration-300 group-hover:scale-[1.02]"          />
 
-     <img
-        src={project.image}
-        alt={project.title}
-        className="aspect-[16/14] w-full object-cover"
-    /> 
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition duration-300 group-hover:bg-black/10">
+            <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-neutral-900 opacity-0 shadow-sm transition duration-300 group-hover:opacity-100">
+              View Project
+            </span>
+          </div>
+        </div>
 
-      <div className="p-6">
-        <p className="text-sm text-neutral-500">{project.category}</p>
-        <h3 className="mt-2 text-2xl font-semibold tracking-tight text-neutral-950">
-          {project.title}
-        </h3>
-        <p className="mt-4 text-base leading-7 text-neutral-600">{project.summary}</p>
-        <Link
-          to={`/projects/${project.slug}`}
-          className="mt-5 inline-flex text-sm font-medium text-neutral-900 transition hover:text-neutral-600"
-        >
-          View Details →
-        </Link>
-      </div>
-    </article>
+        <div className="flex flex-1 flex-col p-6">
+          <p className="text-sm text-neutral-500">{project.category}</p>
+
+          <h3 className="mt-2 text-2xl font-semibold tracking-tight text-neutral-950">
+            {project.title}
+          </h3>
+
+          <p className="mt-4 flex-1 text-base leading-7 text-neutral-600">
+            {project.summary}
+          </p>
+
+          <div className="mt-6 text-sm font-medium text-neutral-900">
+            View Project →
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 }
 
@@ -145,12 +158,27 @@ function Home() {
       <Hero />
 
       <section className="mx-auto max-w-6xl px-6 pb-10">
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+              Highlighted Projects
+            </h2>
+          </div>
+
+          <Link
+            to="/projects"
+            className="inline-flex items-center text-sm font-medium text-neutral-900 transition hover:text-neutral-600"
+          >
+            View All Projects →
+          </Link>
         </div>
-      </section>
+
+  <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+    {featuredProjects.map((project) => (
+      <ProjectCard key={project.slug} project={project} />
+    ))}
+  </div>
+</section>
     </Layout>
   );
 }
@@ -174,36 +202,194 @@ function Projects() {
   );
 }
 
-function ProjectDetail({ title, category, summary, details, images = [] }) {
+function ProjectDetail({
+  title,
+  category,
+  summary,
+  details,
+  images = [],
+  tags = [],
+}) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [featuredImage, ...galleryImages] = images;
+
+  const openImage = (index) => setSelectedIndex(index);
+  const closeImage = () => setSelectedIndex(null);
+
+  const showPrevImage = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((selectedIndex - 1 + images.length) % images.length);
+  };
+
+  const showNextImage = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((selectedIndex + 1) % images.length);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (selectedIndex === null) return;
+
+      if (event.key === "Escape") closeImage();
+      if (event.key === "ArrowLeft") showPrevImage();
+      if (event.key === "ArrowRight") showNextImage();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedIndex]);
+
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-20">
-        <Link to="/projects" className="text-sm text-neutral-500 transition hover:text-neutral-900">
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <Link
+          to="/projects"
+          className="text-sm text-neutral-500 transition hover:text-neutral-900"
+        >
           ← Back to Projects
         </Link>
-        <p className="mt-8 text-sm text-neutral-500">{category}</p>
-        <h1 className="mt-2 text-5xl font-semibold tracking-tight text-neutral-950">{title}</h1>
 
-        {images.length > 0 && (
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {images.map((image, index) => (
-              <img
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                className="aspect-[16/14] w-full rounded-[1.5rem] border border-neutral-200 bg-white object-contain p-4"
-              />
+        <p className="mt-8 text-sm text-neutral-500">{category}</p>
+
+        <h1 className="mt-2 text-5xl font-semibold tracking-tight text-neutral-950">
+          {title}
+        </h1>
+
+        {tags.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-700"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {featuredImage && (
+          <div className="mt-8">
+            <button
+              type="button"
+              onClick={() => openImage(0)}
+              className="group block w-full cursor-zoom-in text-left"
+            >
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+                <img
+                  src={featuredImage.src}
+                  alt={featuredImage.alt}
+                  className="aspect-[16/9] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+                />
+              </div>
+            </button>
+
+            {featuredImage.caption && (
+              <p className="mt-3 text-sm text-neutral-500">
+                {featuredImage.caption}
+              </p>
+            )}
+          </div>
+        )}
+
+        {galleryImages.length > 0 && (
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            {galleryImages.map((image, index) => (
+              <div key={index}>
+                <button
+                  type="button"
+                  onClick={() => openImage(index + 1)}
+                  className="group block w-full cursor-zoom-in text-left"
+                >
+                  <div className="relative overflow-hidden rounded-[1.5rem] border border-neutral-200 bg-white p-4 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="aspect-[16/10] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+                    />
+                  </div>
+                </button>
+
+                {image.caption && (
+                  <p className="mt-3 text-sm text-neutral-500">
+                    {image.caption}
+                  </p>
+                )}
+              </div>
             ))}
           </div>
         )}
 
         <p className="mt-8 text-lg leading-8 text-neutral-600">{summary}</p>
-        <div className="mt-8 space-y-5 text-base leading-8 text-neutral-700">
-          {details.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+
+        <ul className="mt-8 space-y-4 text-base leading-8 text-neutral-700">
+          {details.map((detail) => (
+            <li key={detail} className="flex gap-3">
+              <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-neutral-900" />
+              <span>{detail}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
+
+      {selectedIndex !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm px-6 py-10"          onClick={closeImage}
+        >
+          <div
+            className="relative w-full max-w-6xl rounded-[1.75rem] bg-white p-4 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeImage}
+              className="absolute right-4 top-4 z-10 rounded-full border border-neutral-200 bg-white px-3 py-1 text-sm text-neutral-700 transition hover:bg-neutral-100"
+            >
+              Close
+            </button>
+
+            <button
+              type="button"
+              onClick={showPrevImage}
+              className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-xl text-neutral-700 shadow-sm transition hover:bg-neutral-100"
+            >
+              ←
+            </button>
+
+            <button
+              type="button"
+              onClick={showNextImage}
+              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-xl text-neutral-700 shadow-sm transition hover:bg-neutral-100"
+            >
+              →
+            </button>
+
+            <img
+              src={images[selectedIndex].src}
+              alt={images[selectedIndex].alt}
+              className="max-h-[80vh] w-full rounded-[1.25rem] object-contain"
+            />
+
+            {images[selectedIndex].caption && (
+              <p className="mt-4 text-sm text-neutral-500">
+                {images[selectedIndex].caption}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
@@ -213,32 +399,38 @@ function GyroscopeProject() {
     <ProjectDetail
       category="Manufacturing"
       title="Gyroscope Project"
-      summary="Fully 3D modeled and assembled a gyroscope in Solidworks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings."
+      tags={[ "SolidWorks", "CNC Mill", "Manual Mill" , "Manual Lathe", "Drill Press" , "Manufacturing"]}
+      summary="Fully 3D modeled and assembled a gyroscope in SolidWorks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings."
       images={[
         {
           src: gyroscopeFullAssemblyView,
           alt: "Gyroscope full assembly view",
+          caption: "Full CAD assembly view of the completed gyroscope.",
         },
         {
           src: gyroscopeExplodedView,
           alt: "Gyroscope exploded assembly view",
+          caption: "Exploded CAD view showing how the components fit together.",
         },
         {
           src: gyroscopeSpinning,
-          alt: "Gyroscope spinning",
+          alt: "Machined gyroscope spinning",
+          caption: "Finished gyroscope photographed while spinning.",
         },
         {
           src: gyroscopeSpinoff,
-          alt: "Gyroscope spin-off view",
+          alt: "Gyroscope display stand",
+          caption: "Completed gyroscope displayed in a custom stand.",
         },
       ]}
       details={[
-        "- Operated manual Bridgeport Mill to precisely size 3-inch frame and drill specified holes",
-        "- Machined rotor and spindle to correct length using Harrison and Clausing manual lathes",
-        "- Utilized a Digimatic Height Gage to mark hole patterns with correct location dimensions",
-        "- Used a floor type drill press to drill and countersink holes to exact specifications",
-        "- Machined components on a Haas TM0-P CNC machine to meet allowances and tolerances up to ±0.001in",
-        "- Assembled final product with press fits and bearings, ensuring smooth rotation and proper alignment",]}
+        "Operated manual Bridgeport Mill to precisely size the 3-inch frame and drill specified holes.",
+        "Machined rotor and spindle to correct length using Harrison and Clausing manual lathes.",
+        "Utilized a Digimatic Height Gage to mark hole patterns with correct location dimensions.",
+        "Used a floor-type drill press to drill and countersink holes to exact specification.",
+        "Machined components on a Haas TM0-P CNC machine to meet required tolerances and allowances.",
+        "Assembled the final product with press fits and bearings, ensuring smooth rotation and proper fit.",
+      ]}
     />
   );
 }
@@ -277,22 +469,38 @@ function About() {
       <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-5xl font-semibold tracking-tight">About</h1>
         <p className="mt-8 text-lg leading-8 text-neutral-600">
-          I am a mechanical engineering student focused on CAD, manufacturing,
-          robotics, and hands-on engineering work. I enjoy building projects
-          that combine design thinking with practical implementation.
+          Currently pursuing a B.S. in Mechanical Engineering at UC Davis, 
+          with an expected graduation in June 2027. I love to build things and 
+          design my way through solving real world problems! I am interested in 
+          manufacturing and aerospace industries where I can work on meaningful 
+          projects.
         </p>
         <p className="mt-6 text-lg leading-8 text-neutral-600">
-          My experience includes student leadership, prototyping, engineering
-          research, and process-oriented project work. I’m especially interested
-          in roles where I can keep developing my technical skills while working
-          on real systems.
+          As a Manufacturing Engineer at the ARMS Laboratory at UC Davis, 
+          I support the research lab by assisting in the development of CNC 
+          automation processes and optimizing machining controls. Additionally, 
+          I support the Drivetrain subteam as a Powertrain Mechanical Engineer 
+          at Formula Racing at UC Davis through planetary gearbox design and 
+          motor component/design drawing analysis using SolidWorks! I am 
+          skilled in SolidWorks and Autodesk Fusion 360, with a strong 
+          foundation in engineering principles and a focus on innovation in 
+          manufacturing systems.
+        </p>
+        <p className="mt-6 text-lg leading-8 text-neutral-600">
+          I am currently seeking mechanical engineering internship opportunities 
+          where I can grow my skills in designing, prototyping, and manufacturing. 
+          As a motivated student, I’m excited to learn through hands-on experiences 
+          and in a teamwork setting.
+        </p>
+        <p className="mt-6 text-lg leading-8 text-neutral-600">
+          Incoming Manufacturing Engineering Intern @ Pivotal - Summer 2026
         </p>
       </section>
     </Layout>
   );
 }
 
-function Files() {
+function Contact() {
   const contact = [
     { name: "Resume", url: "/documents/Jonathan Tran Resume.pdf" },
     { name: "LinkedIn Profile", url: "https://www.linkedin.com/in/jonathan-tran-588049229/" },
@@ -337,9 +545,20 @@ function Files() {
   );
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function PortfolioWebsite() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
@@ -347,7 +566,7 @@ export default function PortfolioWebsite() {
         <Route path="/projects/robotics" element={<RoboticsProject />} />
         <Route path="/projects/arms-lab" element={<ArmsLabProject />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Files />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );
