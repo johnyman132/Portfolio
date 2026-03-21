@@ -1,12 +1,18 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import professionalHeadshot from "./assets/images/professional-headshot.jpg";
+import gyroscopeFullAssemblyView from "./assets/images/Gyroscope/Gyroscope-Full-Assembly-View.jpg";
+import gyroscopeExplodedView from "./assets/images/Gyroscope/Gyroscope Assembly Exploded View.jpg";
+import gyroscopeSpinning from "./assets/images/Gyroscope/Gyroscope Spinning.jpg";
+import gyroscopeSpinoff from "./assets/images/Gyroscope/Gyroscope Spinoff.jpg";
 
 const featuredProjects = [
   {
-    slug: "pivotal",
+    slug: "gyroscope-project",
     category: "Manufacturing",
-    title: "Manufacturing Engineering Internship",
+    title: "Gyroscope Project",
     summary:
-      "Supported manufacturing-focused engineering work in an aerospace environment, with emphasis on process improvement, production support, and practical execution.",
+      "Fully 3D modeled and assembled a gyroscope in Solidworks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings.",
+    image: gyroscopeFullAssemblyView,
   },
   {
     slug: "robotics",
@@ -32,7 +38,7 @@ function Navbar() {
           Jonathan Tran
         </Link>
 
-        <nav className="flex items-center gap-7 text-xl text-neutral-600">
+        <nav className="flex items-center gap-6 text-sm text-neutral-600">
           <Link to="/" className="transition hover:text-black">Home</Link>
           <Link to="/projects" className="transition hover:text-black">Projects</Link>
           <Link to="/about" className="transition hover:text-black">About</Link>
@@ -50,7 +56,9 @@ function Layout({ children }) {
       <main>{children}</main>
       <footer className="mt-20 border-t border-black/5">
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <h3 className="text-l font-semibold">Made by Jonathan Tran</h3>
+          <h3 className="text-xl font-semibold">Jonathan Tran</h3>
+          <p className="mt-2 text-sm text-neutral-600">Design. Build. Improve.</p>
+          <p className="mt-6 text-sm text-neutral-500">© 2026 Jonathan Tran. All rights reserved.</p>
         </div>
       </footer>
     </div>
@@ -59,22 +67,19 @@ function Layout({ children }) {
 
 function Hero() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-8 md:py-12">
-      <div className="grid items-center gap-22 md:grid-cols-[1.1fr_0.9fr]">
+    <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
         <div>
           <p className="text-sm font-medium uppercase tracking-[0.25em] text-neutral-500">
-            Mechanical Engineering
+            Engineering Portfolio
           </p>
           <h1 className="mt-5 text-5xl font-semibold tracking-tight text-neutral-950 md:text-7xl">
-            Engineering Portfolio:
-          </h1>
-          <h1 className="mt-4 text-5xl font-semibold tracking-tight text-neutral-950 md:text-7xl">
-            Jonathan Tran
+            Design. Build. Innovate.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600">
-            Welcome to my portfolio showcasing various engineering projects I 
-            have worked on. I am interested in manufacturing and aerospace 
-            industries where I can contribute to meaningful projects.
+            Welcome to my portfolio showcasing engineering work across CAD,
+            manufacturing, robotics, and research. I focus on building practical
+            systems with strong attention to detail and real-world execution.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -96,12 +101,10 @@ function Hero() {
         <div className="rounded-[2rem] border border-neutral-200 bg-neutral-100 p-4 shadow-sm">
           <div className="flex aspect-[4/3] items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-neutral-200 to-neutral-50 text-center">
             <img
-              src="/assets//images/professional headshot.jpg"
+              src={professionalHeadshot}
               alt="Professional headshot of Jonathan Tran"
               className="aspect-[4/3] w-full rounded-[1.5rem] object-cover"
             />
-            <div className="max-w-xs px-0">
-            </div>
           </div>
         </div>
       </div>
@@ -112,7 +115,13 @@ function Hero() {
 function ProjectCard({ project }) {
   return (
     <article className="overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-      <div className="aspect-[16/10] bg-gradient-to-br from-neutral-200 via-neutral-100 to-white" />
+
+     <img
+        src={project.image}
+        alt={project.title}
+        className="aspect-[16/14] w-full object-cover"
+    /> 
+
       <div className="p-6">
         <p className="text-sm text-neutral-500">{project.category}</p>
         <h3 className="mt-2 text-2xl font-semibold tracking-tight text-neutral-950">
@@ -149,7 +158,7 @@ function Home() {
 function Projects() {
   return (
     <Layout>
-      <section className="mx-auto max-w-6xl px-6 py-10">
+      <section className="mx-auto max-w-6xl px-6 py-20">
         <h1 className="text-5xl font-semibold tracking-tight">Projects</h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-neutral-600">
           A selection of projects in manufacturing, CAD, robotics, and research.
@@ -165,7 +174,7 @@ function Projects() {
   );
 }
 
-function ProjectDetail({ title, category, summary, details }) {
+function ProjectDetail({ title, category, summary, details, images = [] }) {
   return (
     <Layout>
       <section className="mx-auto max-w-4xl px-6 py-20">
@@ -174,7 +183,20 @@ function ProjectDetail({ title, category, summary, details }) {
         </Link>
         <p className="mt-8 text-sm text-neutral-500">{category}</p>
         <h1 className="mt-2 text-5xl font-semibold tracking-tight text-neutral-950">{title}</h1>
-        <div className="mt-8 aspect-[16/9] rounded-[2rem] border border-neutral-200 bg-gradient-to-br from-neutral-200 via-neutral-100 to-white" />
+
+        {images.length > 0 && (
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {images.map((image, index) => (
+              <img
+                key={index}
+                src={image.src}
+                alt={image.alt}
+                className="aspect-[16/14] w-full rounded-[1.5rem] border border-neutral-200 bg-white object-contain p-4"
+              />
+            ))}
+          </div>
+        )}
+
         <p className="mt-8 text-lg leading-8 text-neutral-600">{summary}</p>
         <div className="mt-8 space-y-5 text-base leading-8 text-neutral-700">
           {details.map((paragraph) => (
@@ -186,16 +208,37 @@ function ProjectDetail({ title, category, summary, details }) {
   );
 }
 
-function PivotalProject() {
+function GyroscopeProject() {
   return (
     <ProjectDetail
       category="Manufacturing"
-      title="Manufacturing Engineering Internship"
-      summary="Supported engineering work related to production workflows, process improvement, and manufacturing execution in an aerospace environment."
-      details={[
-        "Use this page for a fuller write-up of your internship work, what team you supported, the kind of problems you worked on, and what you learned from the experience.",
-        "You can also add images, process diagrams, or a PDF link later once you want the portfolio to feel more complete.",
+      title="Gyroscope Project"
+      summary="Fully 3D modeled and assembled a gyroscope in Solidworks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings."
+      images={[
+        {
+          src: gyroscopeFullAssemblyView,
+          alt: "Gyroscope full assembly view",
+        },
+        {
+          src: gyroscopeExplodedView,
+          alt: "Gyroscope exploded assembly view",
+        },
+        {
+          src: gyroscopeSpinning,
+          alt: "Gyroscope spinning",
+        },
+        {
+          src: gyroscopeSpinoff,
+          alt: "Gyroscope spin-off view",
+        },
       ]}
+      details={[
+        "- Operated manual Bridgeport Mill to precisely size 3-inch frame and drill specified holes",
+        "- Machined rotor and spindle to correct length using Harrison and Clausing manual lathes",
+        "- Utilized a Digimatic Height Gage to mark hole patterns with correct location dimensions",
+        "- Used a floor type drill press to drill and countersink holes to exact specifications",
+        "- Machined components on a Haas TM0-P CNC machine to meet allowances and tolerances up to ±0.001in",
+        "- Assembled final product with press fits and bearings, ensuring smooth rotation and proper alignment",]}
     />
   );
 }
@@ -231,28 +274,18 @@ function ArmsLabProject() {
 function About() {
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-10">
+      <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-5xl font-semibold tracking-tight">About</h1>
         <p className="mt-8 text-lg leading-8 text-neutral-600">
-          Currently pursuing a B.S. in Mechanical Engineering at UC Davis, with an expected graduation in June 2027. 
-          I love to build things and design my way through solving real world problems! I am interested in 
-          manufacturing and aerospace industries where I can work on meaningful projects.
+          I am a mechanical engineering student focused on CAD, manufacturing,
+          robotics, and hands-on engineering work. I enjoy building projects
+          that combine design thinking with practical implementation.
         </p>
         <p className="mt-6 text-lg leading-8 text-neutral-600">
-          As a Manufacturing Engineer at the ARMS Laboratory at UC Davis, I support the research lab by assisting in 
-          the development of CNC automation processes and optimizing machining controls. Additionally, I support 
-          the Drivetrain subteam as a Powertrain Mechanical Engineer at Formula Racing at UC Davis through 
-          planetary gearbox design and motor component/design drawing analysis using SolidWorks! I am skilled in 
-          SolidWorks and Autodesk Fusion 360, with a strong foundation in engineering principles and a focus on 
-          innovation in manufacturing systems.
-        </p>
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          I am currently seeking mechanical engineering internship opportunities where I can grow my skills in 
-          designing, prototyping, and manufacturing. As a motivated student, I am excited to learn through hands-on 
-          experiences and in a teamwork setting.
-        </p>
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          Incoming Manufacturing Engineering Intern @ Pivotal - Summer 2026
+          My experience includes student leadership, prototyping, engineering
+          research, and process-oriented project work. I’m especially interested
+          in roles where I can keep developing my technical skills while working
+          on real systems.
         </p>
       </section>
     </Layout>
@@ -269,7 +302,7 @@ function Files() {
 
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-10">
+      <section className="mx-auto max-w-4xl px-6 py-20">
         <h1 className="text-5xl font-semibold tracking-tight">Contact</h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-neutral-600">
           Feel free to reach out via email or explore the links below.
@@ -310,7 +343,7 @@ export default function PortfolioWebsite() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/pivotal" element={<PivotalProject />} />
+        <Route path="/projects/gyroscope-project" element={<GyroscopeProject />} />
         <Route path="/projects/robotics" element={<RoboticsProject />} />
         <Route path="/projects/arms-lab" element={<ArmsLabProject />} />
         <Route path="/about" element={<About />} />
