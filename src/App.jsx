@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 
+import professionalHeadshot from "./assets/images/professional-headshot.jpg";
+
 import { gyroscopeImages } from "./assets/projects/gyroscope";
 
 const featuredProjects = [
@@ -10,7 +12,7 @@ const featuredProjects = [
     title: "Gyroscope Project",
     summary:
       "Fully 3D modeled and assembled a gyroscope in Solidworks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings.",
-    image: gyroscopeFullAssemblyView,
+    image: gyroscopeImages[0].src,
   },
   {
     slug: "robotics",
@@ -399,30 +401,9 @@ function GyroscopeProject() {
     <ProjectDetail
       category="Manufacturing"
       title="Gyroscope Project"
-      tags={[ "SolidWorks", "CNC Mill", "Manual Mill" , "Manual Lathe", "Drill Press" , "Manufacturing"]}
+      tags={["SolidWorks", "CNC Mill", "Manual Mill", "Manual Lathe", "Drill Press", "Manufacturing"]}
       summary="Fully 3D modeled and assembled a gyroscope in SolidWorks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings."
-      images={[
-        {
-          src: gyroscopeFullAssemblyView,
-          alt: "Gyroscope full assembly view",
-          caption: "Full CAD assembly view of the completed gyroscope.",
-        },
-        {
-          src: gyroscopeExplodedView,
-          alt: "Gyroscope exploded assembly view",
-          caption: "Exploded CAD view showing how the components fit together.",
-        },
-        {
-          src: gyroscopeSpinning,
-          alt: "Machined gyroscope spinning",
-          caption: "Finished gyroscope photographed while spinning.",
-        },
-        {
-          src: gyroscopeSpinoff,
-          alt: "Gyroscope display stand",
-          caption: "Completed gyroscope displayed in a custom stand.",
-        },
-      ]}
+      images={gyroscopeImages}
       details={[
         "Operated manual Bridgeport Mill to precisely size the 3-inch frame and drill specified holes.",
         "Machined rotor and spindle to correct length using Harrison and Clausing manual lathes.",
