@@ -1,10 +1,16 @@
+// Create React app with Vite and React Router
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 
+// Import Professional Headshot Image
 import professionalHeadshot from "./assets/images/professional-headshot.jpg";
 
+// Import Project Images and Videos
 import { gyroscopeImages } from "./assets/projects/gyroscope";
+import { backupSensorImages } from "./assets/projects/backup-sensor";
+import { labQuestImages } from "./assets/projects/labquest";
 
+// Featured Projects Data on Home Page
 const featuredProjects = [
   {
     slug: "gyroscope-project",
@@ -15,21 +21,24 @@ const featuredProjects = [
     image: gyroscopeImages[0].src,
   },
   {
-    slug: "robotics",
-    category: "Robotics / CAD",
-    title: "Foothill Robotics CAD Leadership",
+    slug: "backup-sensor-project",
+    category: "Arduino",
+    title: "Backup Sensor Project",
     summary:
-      "Led CAD organization and supported student designers through modeling, part development, and design review workflows for robotics projects.",
+      "Worked with a team to design and build a prototype backup sensor system using Arduino. The project featured proximity detection with an HC-SR04 Ultrasonic Sensor and visual indicators through LEDs, along with a buzzer that varied in intensity based on object distance.",
+    image: backupSensorImages[0].src,
   },
   {
-    slug: "arms-lab",
-    category: "Research",
-    title: "ARMS Lab CNC Automation Research",
+    slug: "labquest-stand-project",
+    category: "Manufacturing",
+    title: "LabQuest Stand Project",
     summary:
-      "Explored CNC probing, automation logic, and stock detection workflows for smarter machine setup and manufacturing research applications.",
+      "Designed and prototyped 3D printed stands for the LabQuest device using CAD on SolidWorks. The stands are designed to securely hold the LabQuest device at an optimal viewing angle during experiments, while also being compact and easy to transport.",
+    image: labQuestImages[0].src,
   },
 ];
 
+// Navigation Bar at the Top of the Page
 function Navbar() {
   return (
     <header className="border-b border-black/5 bg-white">
@@ -38,7 +47,7 @@ function Navbar() {
           Jonathan Tran
         </Link>
 
-        <nav className="flex items-center gap-7 text-md text-neutral-600">
+        <nav className="flex items-center gap-7 text-lg text-neutral-600">
           <Link to="/" className="transition hover:text-black">Home</Link>
           <Link to="/projects" className="transition hover:text-black">Projects</Link>
           <Link to="/about" className="transition hover:text-black">About</Link>
@@ -49,6 +58,7 @@ function Navbar() {
   );
 }
 
+// Layout and Structure
 function Layout({ children }) {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
@@ -57,13 +67,14 @@ function Layout({ children }) {
       <footer className="mt-20 border-t border-black/5">
         <div className="mx-auto max-w-6xl px-6 py-10">
           <h3 className="text-xl font-semibold">Jonathan Tran</h3>
-          <p className="mt-2 text-sm text-neutral-600">Mechanical Engineering Portfolio</p>
+          <p className="mt-2 text-sm text-neutral-600">Mechanical Engineering Portfolio, 2026</p>
         </div>
       </footer>
     </div>
   );
 }
 
+// Home Page with Introduction and Professional Headshot
 function Hero() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20 md:py-16">
@@ -113,6 +124,7 @@ function Hero() {
   );
 }
 
+// Project Card Component
 function ProjectCard({ project }) {
   return (
     <Link
@@ -153,6 +165,7 @@ function ProjectCard({ project }) {
   );
 }
 
+// Home
 function Home() {
   return (
     <Layout>
@@ -184,6 +197,7 @@ function Home() {
   );
 }
 
+// Projects Page showing projects in a grid layout
 function Projects() {
   return (
     <Layout>
@@ -203,6 +217,7 @@ function Projects() {
   );
 }
 
+// Individual Project Detail Page with Image Gallery and Project Details
 function ProjectDetail({
   title,
   category,
@@ -212,19 +227,40 @@ function ProjectDetail({
   tags = [],
 }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [featuredImage, ...galleryImages] = images;
+  const [featuredMedia, ...galleryMedia] = images;
 
-  const openImage = (index) => setSelectedIndex(index);
+  const openImage = (index) => {
+    if (images[index]?.type === "video") return;
+    setSelectedIndex(index);
+  };
+
   const closeImage = () => setSelectedIndex(null);
+
+  const getNextImageIndex = (startIndex, direction) => {
+    if (!images.length) return null;
+
+    let nextIndex = startIndex;
+
+    for (let i = 0; i < images.length; i++) {
+      nextIndex = (nextIndex + direction + images.length) % images.length;
+      if (images[nextIndex]?.type !== "video") {
+        return nextIndex;
+      }
+    }
+
+    return null;
+  };
 
   const showPrevImage = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((selectedIndex - 1 + images.length) % images.length);
+    const prevIndex = getNextImageIndex(selectedIndex, -1);
+    if (prevIndex !== null) setSelectedIndex(prevIndex);
   };
 
   const showNextImage = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((selectedIndex + 1) % images.length);
+    const nextIndex = getNextImageIndex(selectedIndex, 1);
+    if (nextIndex !== null) setSelectedIndex(nextIndex);
   };
 
   useEffect(() => {
@@ -281,55 +317,79 @@ function ProjectDetail({
           </div>
         )}
 
-        {featuredImage && (
+        {featuredMedia && (
           <div className="mt-8">
-            <button
-              type="button"
-              onClick={() => openImage(0)}
-              className="group block w-full cursor-zoom-in text-left"
-            >
-              <div className="relative overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
-                <img
-                  src={featuredImage.src}
-                  alt={featuredImage.alt}
-                  className="aspect-[16/9] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+            {featuredMedia.type === "video" ? (
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm">
+                <video
+                  src={featuredMedia.src}
+                  controls
+                  className="aspect-[16/9] w-full rounded-[1rem] object-contain"
                 />
               </div>
-            </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openImage(0)}
+                className="group block w-full cursor-zoom-in text-left"
+              >
+                <div className="relative overflow-hidden rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+                  <img
+                    src={featuredMedia.src}
+                    alt={featuredMedia.alt}
+                    className="aspect-[16/9] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+                  />
+                </div>
+              </button>
+            )}
 
-            {featuredImage.caption && (
+            {featuredMedia.caption && (
               <p className="mt-3 text-sm text-neutral-500">
-                {featuredImage.caption}
+                {featuredMedia.caption}
               </p>
             )}
           </div>
         )}
 
-        {galleryImages.length > 0 && (
+        {galleryMedia.length > 0 && (
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {galleryImages.map((image, index) => (
-              <div key={index}>
-                <button
-                  type="button"
-                  onClick={() => openImage(index + 1)}
-                  className="group block w-full cursor-zoom-in text-left"
-                >
-                  <div className="relative overflow-hidden rounded-[1.5rem] border border-neutral-200 bg-white p-4 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="aspect-[16/10] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                </button>
+            {galleryMedia.map((media, index) => {
+              const actualIndex = index + 1;
 
-                {image.caption && (
-                  <p className="mt-3 text-sm text-neutral-500">
-                    {image.caption}
-                  </p>
-                )}
-              </div>
-            ))}
+              return (
+                <div key={actualIndex}>
+                  {media.type === "video" ? (
+                    <div className="relative overflow-hidden rounded-[1.5rem] border border-neutral-200 bg-white p-4 shadow-sm">
+                      <video
+                        src={media.src}
+                        controls
+                        className="aspect-[16/10] w-full rounded-[1rem] object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => openImage(actualIndex)}
+                      className="group block w-full cursor-zoom-in text-left"
+                    >
+                      <div className="relative overflow-hidden rounded-[1.5rem] border border-neutral-200 bg-white p-4 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-lg">
+                        <img
+                          src={media.src}
+                          alt={media.alt}
+                          className="aspect-[16/10] w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+                        />
+                      </div>
+                    </button>
+                  )}
+
+                  {media.caption && (
+                    <p className="mt-3 text-sm text-neutral-500">
+                      {media.caption}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 
@@ -345,9 +405,10 @@ function ProjectDetail({
         </ul>
       </section>
 
-      {selectedIndex !== null && (
+      {selectedIndex !== null && images[selectedIndex]?.type !== "video" && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm px-6 py-10"          onClick={closeImage}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-6 py-10 backdrop-blur-sm"
+          onClick={closeImage}
         >
           <div
             className="relative w-full max-w-6xl rounded-[1.75rem] bg-white p-4 shadow-2xl"
@@ -395,6 +456,7 @@ function ProjectDetail({
   );
 }
 
+// Gyroscope Project Detail Page
 function GyroscopeProject() {
   return (
     <ProjectDetail
@@ -415,34 +477,78 @@ function GyroscopeProject() {
   );
 }
 
-function RoboticsProject() {
+// Backup Sensor Project Detail Page
+function BackUpSensorProject() {
   return (
     <ProjectDetail
-      category="Robotics / CAD"
-      title="Foothill Robotics CAD Leadership"
-      summary="Led CAD-related organization and support for student robotics projects, helping create a more structured design workflow for the team."
+      category="Arduino"
+      title="Backup Sensor Project"
+      tags={["Arduino", "Circuit Analysis", "Project Management"]}
+      summary="Designed and built a backup sensor system using Arduino, 
+              featuring proximity detection and visual indicators. The system 
+              utilized an HC-SR04 Ultrasonic Sensor to measure distance and trigger 
+              LED indicators based on object proximity. There is also a buzzer that 
+              continuously makes noise while activated along with the LED. The LED 
+              and buzzer indicator vary on object distance: the LED will turn green
+              when there is no object in close proximity, and will turn red when an 
+              object is detected. The buzzer will increase in intensity as the 
+              object gets closer. The entire circuit is activated by a remote control."
+      images={backupSensorImages}
       details={[
-        "Use this page to describe your CAD manager role, how you helped teammates, and any assemblies, mechanisms, or drawings you contributed to.",
-        "You can later split this into multiple robotics projects if you want each robot or subsystem to have its own dedicated page.",
+        "Coordinated a three-person team to develop an Arduino-based proximity sensor with an HC-SR04 Ultrasonic Sensor for a small scale-prototype car, overseeing the project from initial concept to a fully functional device.",
+        "Contributed to the circuit design and C++ control code, focusing on the successful integration of the ultrasonic sensor to detect obstacle proximity along with the user alert system through the usage of LEDs and a buzzer.",
+        "Implemented proximity detection logic to trigger green and red LED indicators based on object distance.",
+        "Assembled and tested the final device, troubleshooting both hardware and software issues to ensure the system provided accurate and reliable measurements.",
       ]}
     />
   );
 }
 
-function ArmsLabProject() {
+// LabQuest Stand Project Detail Page
+function LabQuestStandProject() {
   return (
     <ProjectDetail
-      category="Research"
-      title="ARMS Lab CNC Automation Research"
-      summary="Explored probing logic, automation workflows, and CNC setup concepts for smarter machining processes and research applications."
+      category="Manufacturing"
+      title="LabQuest Stand Project"
+      tags={["SolidWorks", "3D Printing", "Manufacturing"]}
+      summary={
+        <>
+          At my community college, LabQuest devices were frequently used for 
+          chemistry experiments, but there was a lack of proper stands to hold 
+          the devices securely during use. To address this issue, I designed 
+          and prototyped 3D printed stands for the LabQuest device using CAD 
+          on SolidWorks. I had initially proposed my idea to my chemistry 
+          professor, and through multiple interactions I was able to 
+          incorporate both her feedback and the needs of the students 
+          to optimize the final design of the stands for functionality and 
+          ease of use. I optimized the 3D print settings for strength and 
+          print efficiency, ultimately saving the department over $1000
+          compared to purchasing commerical stands from the LabQuest company. 
+          {" "}
+          <a
+            href="https://www.linkedin.com/posts/jonathan-tran-588049229_im-honored-and-excited-to-share-a-recent-activity-7336423699358633989-u9AK?utm_source=share&utm_medium=member_desktop&rcm=ACoAADkjE_gBgIZV1oGA8bKIOc2n_nuS0mgFzhw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline hover:text-blue-800"
+          >
+            Check out my LinkedIn post! →
+          </a>
+        </>
+      }
+      images={labQuestImages}
       details={[
-        "Use this page for your ARMS Lab research summary, including probing goals, stock detection concepts, automation macros, and any implementation ideas you developed.",
-        "This page would look especially strong with a simple diagram, machine photo, or short list of technical takeaways from the project.",
+        "Utilized CAD on SolidWorks to design and assemble the 3D printed stands for the LabQuest device.",
+        "Optimized the design for mass production using on a Bambu Slicer plate, with 8 stands printed at a time, reducing overall production time.",
+        "Assembled and tested the final product, ensuring the stands securely hold the LabQuest device at an optimal viewing angle during experiments.",
+        "Collaborated with the chemistry professor to gather feedback and iteratively improve the design based on the needs of the students and functionality during experiments.",
+        "Utilized black PETG filament for 3D printing the stands on a Bambu Lab X1 Carbon 3D printer, optimizing for strength and durability.",
       ]}
     />
   );
+      
 }
 
+// About Page with Personal Background and Experience
 function About() {
   return (
     <Layout>
@@ -480,6 +586,7 @@ function About() {
   );
 }
 
+// Contact Page with Email and Links to Resume and LinkedIn
 function Contact() {
   const contact = [
     { name: "Resume", url: "/documents/Jonathan Tran Resume.pdf" },
@@ -525,6 +632,7 @@ function Contact() {
   );
 }
 
+// Scroll to top on route change
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -535,6 +643,7 @@ function ScrollToTop() {
   return null;
 }
 
+// Main App Component with Routing
 export default function PortfolioWebsite() {
   return (
     <Router>
@@ -543,8 +652,8 @@ export default function PortfolioWebsite() {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/gyroscope-project" element={<GyroscopeProject />} />
-        <Route path="/projects/robotics" element={<RoboticsProject />} />
-        <Route path="/projects/arms-lab" element={<ArmsLabProject />} />
+        <Route path="/projects/backup-sensor-project" element={<BackUpSensorProject />} />
+        <Route path="/projects/labquest-stand-project" element={<LabQuestStandProject />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
