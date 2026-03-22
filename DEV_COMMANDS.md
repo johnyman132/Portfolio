@@ -23,8 +23,16 @@ git add .
 git commit -m "What Changed?"
 git push
 ```
+OR
+
+Use "Source Control" feature on the left sidebar to update changes:
+1. message what changes were made
+2. Click "Commit"
+3. Click "Sync Changes" and wait for completion
+4. Check Vercel and Github for final changes, ensure everything went through
 
 Vercel will automatically redeploy the site.
+https://jonathantran.vercel.app/ 
 
 ---
 
@@ -38,6 +46,12 @@ cd Portfolio
 npm install
 npm run dev
 ```
+
+## Returning to work on a different laptop
+
+Clone the project
+ask Chatgpt what to do
+
 
 ---
 

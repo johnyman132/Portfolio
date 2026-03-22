@@ -1,6 +1,7 @@
 // Create React app with Vite and React Router
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import { Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import Professional Headshot Image
 import professionalHeadshot from "./assets/images/professional-headshot.jpg";
@@ -17,7 +18,7 @@ const featuredProjects = [
     category: "Manufacturing",
     title: "Gyroscope Project",
     summary:
-      "Fully 3D modeled and assembled a gyroscope in Solidworks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings.",
+      "Fully 3D modeled and assembled a gyroscope in SolidWorks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings.",
     image: gyroscopeImages[0].src,
   },
   {
@@ -65,9 +66,25 @@ function Layout({ children }) {
       <Navbar />
       <main>{children}</main>
       <footer className="mt-20 border-t border-black/5">
-        <div className="mx-auto max-w-6xl px-6 py-10">
-          <h3 className="text-xl font-semibold">Jonathan Tran</h3>
-          <p className="mt-2 text-sm text-neutral-600">Mechanical Engineering Portfolio, 2026</p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h3 className="text-xl font-semibold">Jonathan Tran</h3>
+            <p className="mt-2 text-sm text-neutral-600">
+              Mechanical Engineering Portfolio, 2026
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.linkedin.com/in/jonathan-tran-588049229/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-4 py-2 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-950"
+            >
+              <Linkedin size={18} />
+              LinkedIn
+            </a>
+          </div>
         </div>
       </footer>
     </div>
@@ -88,10 +105,9 @@ function Hero() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-neutral-600">
             Welcome to my portfolio showcasing engineering work across CAD,
-            manufacturing, and research. I love to build things and design my 
-            way through solving real world problems! I am interested in 
-            manufacturing and aerospace industries where I can work on 
-            meaningful projects.
+            manufacturing, and research. I enjoy designing, building, and improving
+            solutions to real-world problems, with a strong interest in manufacturing
+            and aerospace applications.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -165,16 +181,228 @@ function ProjectCard({ project }) {
   );
 }
 
+// Experience Section with List of Roles and Descriptions
+function ExperienceSection() {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const experienceHighlights = [
+    {
+      role: "Incoming Manufacturing Engineering Intern",
+      organization: "Pivotal",
+      period: "June 2026 - September 2026",
+      description:
+        "Joining Pivotal as a Manufacturing Engineering Intern to support aerospace manufacturing processes and production-focused engineering work.",
+    },
+    {
+      role: "Manufacturing Engineer",
+      organization: "ARMS Laboratory at UC Davis",
+      period: "September 2025 - Present",
+      description:
+        "Supporting CNC automation research focused on probing logic, setup workflows, and smarter machining processes.",
+    },
+    {
+      role: "Powertrain / Drivetrain Member",
+      organization: "Formula Racing at UC Davis",
+      period: "September 2025 - Present",
+      description:
+        "Contributing to drivetrain and gearbox-related engineering work as part of the Formula SAE team.",
+    },
+    {
+      role: "CAD Manager",
+      organization: "Foothill Robotics Club",
+      period: "April 2024 - June 2025",
+      description:
+        "Led CAD-related work for robotics projects, supported part design, and helped organize technical design efforts within the club.",
+    },
+    {
+      role: "Math and English Tutor",
+      organization: "Kumon",
+      period: "June 2022 - September 2025",
+      description:
+        "Supported students in developing problem-solving skills, accuracy, and confidence through structured academic guidance.",
+    },
+  ];
+
+  const updateScrollState = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const maxScrollLeft = el.scrollWidth - el.clientWidth;
+    const tolerance = 2;
+
+    setCanScrollLeft(el.scrollLeft > tolerance);
+    setCanScrollRight(el.scrollLeft < maxScrollLeft - tolerance);
+  };
+
+  const scroll = (direction) => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const scrollAmount = 360;
+
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    updateScrollState();
+
+    el.addEventListener("scroll", updateScrollState);
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, []);
+
+  return (
+    <section className="mx-auto max-w-6xl px-6 pb-14">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
+            Experience
+          </h2>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-neutral-600">
+            A snapshot of the engineering and leadership experiences I have built
+            through research, design teams, internships, and mentorship roles.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => scroll("left")}
+            disabled={!canScrollLeft}
+            className={`inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-sm transition ${
+              canScrollLeft
+                ? "border-neutral-200 bg-white text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-50 hover:text-neutral-950"
+                : "cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-300"
+            }`}
+            aria-label="Scroll experience cards left"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scroll("right")}
+            disabled={!canScrollRight}
+            className={`inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-sm transition ${
+              canScrollRight
+                ? "border-neutral-200 bg-white text-neutral-700 hover:-translate-y-0.5 hover:bg-neutral-50 hover:text-neutral-950"
+                : "cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-300"
+            }`}
+            aria-label="Scroll experience cards right"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      <div className="relative">
+        {canScrollLeft && (
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-white to-transparent" />
+        )}
+
+        {canScrollRight && (
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-white to-transparent" />
+        )}
+
+        <div
+          ref={scrollRef}
+          className="overflow-x-scroll pt-2 pb-4 scroll-smooth"
+        >
+          <div className="flex w-max gap-6 snap-x snap-mandatory">
+            {experienceHighlights.map((item) => (
+              <article
+                key={`${item.role}-${item.organization}`}
+                className="w-[320px] shrink-0 snap-start rounded-[1.5rem] border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-2 hover:shadow-md"
+              >
+                <p className="text-sm text-neutral-500">{item.period}</p>
+
+                <h3 className="mt-2 text-xl font-semibold tracking-tight text-neutral-950">
+                  {item.role}
+                </h3>
+
+                <p className="mt-2 text-sm font-medium text-neutral-700">
+                  {item.organization}
+                </p>
+
+                <p className="mt-4 text-base leading-7 text-neutral-600">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Skills Section with List of Skills and Tools
+function SkillsSection() {
+  const skills = [
+    "SolidWorks",
+    "CNC Machining",
+    "Manual Mill",
+    "Manual Lathe",
+    "3D Printing",
+    "Arduino",
+    "CAD Modeling",
+    "Manufacturing Drawings",
+    "Prototyping",
+    "Assembly",
+    "Research",
+    "Problem Solving",
+  ];
+
+  return (
+    <section className="mx-auto max-w-6xl px-6 pb-14">
+      <div className="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 md:p-10">
+        <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
+          Skills
+        </h2>
+
+        <p className="mt-3 max-w-2xl text-base leading-7 text-neutral-600">
+          Tools and technical areas I have developed through coursework, projects,
+          machining, and research experience.
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          {skills.map((skill) => (
+            <span
+              key={skill}
+              className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-700"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Home
 function Home() {
   return (
     <Layout>
       <Hero />
+      <ExperienceSection />
 
       <section className="mx-auto max-w-6xl px-6 pb-10">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+            <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
               Highlighted Projects
             </h2>
           </div>
@@ -187,12 +415,14 @@ function Home() {
           </Link>
         </div>
 
-  <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-    {featuredProjects.map((project) => (
-      <ProjectCard key={project.slug} project={project} />
-    ))}
-  </div>
-</section>
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
+      </section>
+
+      <SkillsSection />
     </Layout>
   );
 }
@@ -523,7 +753,7 @@ function LabQuestStandProject() {
           to optimize the final design of the stands for functionality and 
           ease of use. I optimized the 3D print settings for strength and 
           print efficiency, ultimately saving the department over $1000
-          compared to purchasing commerical stands from the LabQuest company. 
+          compared to purchasing commercial stands from the LabQuest company. 
           {" "}
           <a
             href="https://www.linkedin.com/posts/jonathan-tran-588049229_im-honored-and-excited-to-share-a-recent-activity-7336423699358633989-u9AK?utm_source=share&utm_medium=member_desktop&rcm=ACoAADkjE_gBgIZV1oGA8bKIOc2n_nuS0mgFzhw"
@@ -531,7 +761,7 @@ function LabQuestStandProject() {
             rel="noopener noreferrer"
             className="text-blue-600 underline hover:text-blue-800"
           >
-            Check out my LinkedIn post! →
+            View project post on LinkedIn →
           </a>
         </>
       }
