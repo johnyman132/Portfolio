@@ -10,9 +10,10 @@ import professionalHeadshot from "./assets/images/professional-headshot.jpg";
 import { gyroscopeImages } from "./assets/projects/gyroscope";
 import { backupSensorImages } from "./assets/projects/backup-sensor";
 import { labQuestImages } from "./assets/projects/labquest";
+import { multiSpeedFanImages } from "./assets/projects/multi-speed-fan";
 
-// Featured Projects Data on Home Page
-const featuredProjects = [
+// All Project Data and Details
+const allProjects = [
   {
     slug: "gyroscope-project",
     category: "Manufacturing",
@@ -20,6 +21,7 @@ const featuredProjects = [
     summary:
       "Fully 3D modeled and assembled a gyroscope in SolidWorks with 8 parts from provided CAD drawings. Manufactured the parts on a CNC mill and lathe, then assembled the final product with press fits and bearings.",
     image: gyroscopeImages[0].src,
+    featured: true,
   },
   {
     slug: "backup-sensor-project",
@@ -28,16 +30,30 @@ const featuredProjects = [
     summary:
       "Worked with a team to design and build a prototype backup sensor system using Arduino. The project featured proximity detection with an HC-SR04 Ultrasonic Sensor and visual indicators through LEDs, along with a buzzer that varied in intensity based on object distance.",
     image: backupSensorImages[0].src,
+    featured: true,
   },
   {
     slug: "labquest-stand-project",
     category: "Manufacturing",
     title: "LabQuest Stand Project",
     summary:
-      "Designed and prototyped 3D printed stands for the LabQuest device using CAD on SolidWorks. The stands are designed to securely hold the LabQuest device at an optimal viewing angle during experiments, while also being compact and easy to transport.",
+      "Designed and prototyped 3D printed stands for the LabQuest device using SolidWorks. The stands are designed to securely hold the LabQuest device at an optimal viewing angle during experiments, while also being compact and easy to transport.",
     image: labQuestImages[0].src,
+    featured: true,
+  },
+  {
+    slug: "multi-speed-fan-project",
+    category: "Arduino",
+    title: "Multi-Speed Fan Project",
+    summary:
+      "Designed and built a multi-speed fan system with variable speed control, integrating circuit design, motor control, and hardware testing into a functional prototype.",
+    image: multiSpeedFanImages[0].src,
+    featured: false,
   },
 ];
+
+// Filter featured projects for the home page highlight section
+const featuredProjects = allProjects.filter((project) => project.featured);
 
 // Navigation Bar at the Top of the Page
 function Navbar() {
@@ -191,7 +207,7 @@ function ExperienceSection() {
     {
       role: "Incoming Manufacturing Engineering Intern",
       organization: "Pivotal",
-      period: "June 2026 - September 2026",
+      period: "Summer 2026",
       description:
         "Joining Pivotal as a Manufacturing Engineering Intern to support aerospace manufacturing processes and production-focused engineering work.",
     },
@@ -203,11 +219,11 @@ function ExperienceSection() {
         "Supporting CNC automation research focused on probing logic, setup workflows, and smarter machining processes.",
     },
     {
-      role: "Powertrain / Drivetrain Member",
+      role: "Powertrain Engineer",
       organization: "Formula Racing at UC Davis",
       period: "September 2025 - Present",
       description:
-        "Contributing to drivetrain and gearbox-related engineering work as part of the Formula SAE team.",
+        "Contributing to Drivetrain sub-team and gearbox-related engineering work as part of the Formula SAE team.",
     },
     {
       role: "CAD Manager",
@@ -217,14 +233,16 @@ function ExperienceSection() {
         "Led CAD-related work for robotics projects, supported part design, and helped organize technical design efforts within the club.",
     },
     {
-      role: "Math and English Tutor",
-      organization: "Kumon",
-      period: "June 2022 - September 2025",
+      role: "3D Print Operations Lead",
+      organization: "Foothill 3D Printmakers Association",
+      period: "January 2025 - July 2025",
       description:
-        "Supported students in developing problem-solving skills, accuracy, and confidence through structured academic guidance.",
+        "Coordinate and fulfill 3D printing requests for three student organizations on campus, maintaining a streamlined process from design intake to final production and delivery.",
     },
   ];
 
+
+  // Scroll handling for experience section with left and right buttons
   const updateScrollState = () => {
     const el = scrollRef.current;
     if (!el) return;
@@ -352,17 +370,16 @@ function ExperienceSection() {
 function SkillsSection() {
   const skills = [
     "SolidWorks",
-    "CNC Machining",
+    "Autodesk Fusion 360",
+    "CNC Programming & Machining",
+    "3D Printing",
+    "CAD and CAM Modeling",
     "Manual Mill",
     "Manual Lathe",
-    "3D Printing",
-    "Arduino",
-    "CAD Modeling",
     "Manufacturing Drawings",
     "Prototyping",
-    "Assembly",
-    "Research",
-    "Problem Solving",
+    "MATLAB",
+    "Leadership",
   ];
 
   return (
@@ -392,7 +409,7 @@ function SkillsSection() {
   );
 }
 
-// Home
+// Home Page showing Hero Section, Experience Highlights, Featured Projects, and Skills
 function Home() {
   return (
     <Layout>
@@ -415,7 +432,7 @@ function Home() {
           </Link>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {featuredProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
@@ -438,7 +455,7 @@ function Projects() {
         </p>
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {featuredProjects.map((project) => (
+          {allProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
@@ -523,7 +540,7 @@ function ProjectDetail({
       <section className="mx-auto max-w-5xl px-6 py-16">
         <Link
           to="/projects"
-          className="text-sm text-neutral-500 transition hover:text-neutral-900"
+          className="text-xl text-neutral-500 transition hover:text-neutral-900"
         >
           ← Back to Projects
         </Link>
@@ -778,6 +795,34 @@ function LabQuestStandProject() {
       
 }
 
+function MultiSpeedFanProject() {
+  return (
+    <ProjectDetail
+      category="Arduino"
+      title="Multi-Speed Fan Project"
+      tags={["Circuit Analysis"]}
+      summary="Created a simple circuit of a multi-speed fan using a DC motor, 
+              small fan blades, and a breadboard, powered by a 9V battery. 
+              The circuit has 3 switch paths with different combinations of
+              resistors to allow for variable speed control of the fan. The DC
+              motor helps create a linear voltage-RPM relationship. There are three 
+              speed settings of low (3750 RPM), medium (7500 RPM), and high (8571 RPM).
+              I 3D-modeled and printed a small PLA plate to hold the circuit 
+              components with the battery. After researching the behavior of 
+              fan-spinning and testing the circuit, I created a comprehensive 
+              presentation slidedeck to explain the circuit design, research, 
+              and testing results."
+      images={multiSpeedFanImages}
+      details={[
+        "Conducted research on DC motor control and circuit design to develop a multi-speed fan system with variable speed control using resistors and switches.",
+        "Measured voltage using a DMM over 3 paths and calculated RPM using a computer audio recording software, Audacity",
+        "Designed and assembled the circuit on a breadboard, integrating a DC motor, small fan blades, resistors, and switches to achieve the desired speed settings.",
+        "Conducted research on how a fan blade interacts with air in order to determine the correct spinning direction for the blades.",
+      ]}
+    />
+  );
+}
+
 // About Page with Personal Background and Experience
 function About() {
   return (
@@ -884,6 +929,7 @@ export default function PortfolioWebsite() {
         <Route path="/projects/gyroscope-project" element={<GyroscopeProject />} />
         <Route path="/projects/backup-sensor-project" element={<BackUpSensorProject />} />
         <Route path="/projects/labquest-stand-project" element={<LabQuestStandProject />} />
+        <Route path="/projects/multi-speed-fan-project" element={<MultiSpeedFanProject />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
