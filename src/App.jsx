@@ -10,7 +10,7 @@ import professionalHeadshot from "./assets/images/professional-headshot.jpg";
 import { gyroscopeImages } from "./assets/projects/gyroscope";
 import { backupSensorImages } from "./assets/projects/backup-sensor";
 import { labQuestImages } from "./assets/projects/labquest";
-import { multiSpeedFanImages } from "./assets/projects/multi-speed-fan";
+import { multiSpeedFanImages, multiSpeedFanSlides } from "./assets/projects/multi-speed-fan";
 
 // All Project Data and Details
 const allProjects = [
@@ -471,9 +471,11 @@ function ProjectDetail({
   summary,
   details,
   images = [],
+  slides = [],
   tags = [],
 }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [featuredMedia, ...galleryMedia] = images;
 
   const openImage = (index) => {
@@ -510,18 +512,34 @@ function ProjectDetail({
     if (nextIndex !== null) setSelectedIndex(nextIndex);
   };
 
+  const showPrevSlide = () => {
+    if (!slides.length) return;
+    setActiveSlideIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const showNextSlide = () => {
+    if (!slides.length) return;
+    setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (selectedIndex === null) return;
+      if (selectedIndex !== null) {
+        if (event.key === "Escape") closeImage();
+        if (event.key === "ArrowLeft") showPrevImage();
+        if (event.key === "ArrowRight") showNextImage();
+        return;
+      }
 
-      if (event.key === "Escape") closeImage();
-      if (event.key === "ArrowLeft") showPrevImage();
-      if (event.key === "ArrowRight") showNextImage();
+      if (slides.length > 0) {
+        if (event.key === "ArrowLeft") showPrevSlide();
+        if (event.key === "ArrowRight") showNextSlide();
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedIndex]);
+  }, [selectedIndex, slides]);
 
   useEffect(() => {
     if (selectedIndex !== null) {
@@ -540,7 +558,7 @@ function ProjectDetail({
       <section className="mx-auto max-w-5xl px-6 py-16">
         <Link
           to="/projects"
-          className="text-xl text-neutral-500 transition hover:text-neutral-900"
+          className="text-sm text-neutral-500 transition hover:text-neutral-900"
         >
           ← Back to Projects
         </Link>
@@ -650,6 +668,75 @@ function ProjectDetail({
             </li>
           ))}
         </ul>
+
+        {slides.length > 0 && (
+          <div className="mt-12">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
+                  Presentation Slides
+                </h2>
+                <p className="mt-2 text-sm text-neutral-500">
+                  Here are the presentation slides I created for this project showcasing main details.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={showPrevSlide}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                  aria-label="Previous slide"
+                >
+                  ←
+                </button>
+
+                <button
+                  type="button"
+                  onClick={showNextSlide}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                  aria-label="Next slide"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+
+            <div className="mx-auto max-w-3xl rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm">
+              <img
+                src={slides[activeSlideIndex].src}
+                alt={slides[activeSlideIndex].alt}
+                className="mx-auto aspect-[16/9] max-h-[500px] w-full rounded-[1rem] object-contain"
+              />
+            </div>
+
+            <div className="mt-4 flex items-center justify-between gap-4">
+              <p className="text-sm text-neutral-500">
+                {slides[activeSlideIndex].caption}
+              </p>
+
+              <p className="text-sm text-neutral-400">
+                {activeSlideIndex + 1} / {slides.length}
+              </p>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {slides.map((slide, index) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  onClick={() => setActiveSlideIndex(index)}
+                  className={`h-2.5 rounded-full transition ${
+                    index === activeSlideIndex
+                      ? "w-8 bg-neutral-900"
+                      : "w-2.5 bg-neutral-300 hover:bg-neutral-400"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {selectedIndex !== null && images[selectedIndex]?.type !== "video" && (
@@ -813,6 +900,7 @@ function MultiSpeedFanProject() {
               presentation slidedeck to explain the circuit design, research, 
               and testing results."
       images={multiSpeedFanImages}
+      slides={multiSpeedFanSlides}
       details={[
         "Conducted research on DC motor control and circuit design to develop a multi-speed fan system with variable speed control using resistors and switches.",
         "Measured voltage using a DMM over 3 paths and calculated RPM using a computer audio recording software, Audacity",
