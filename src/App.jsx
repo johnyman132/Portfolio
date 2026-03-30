@@ -267,6 +267,13 @@ function ExperienceSection() {
   };
 
   useEffect(() => {
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.src;
+    });
+  }, [slides]);
+
+  useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
