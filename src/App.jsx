@@ -43,7 +43,7 @@ const allProjects = [
   },
   {
     slug: "multi-speed-fan-project",
-    category: "Arduino",
+    category: "Circuit Analysis",
     title: "Multi-Speed Fan Project",
     summary:
       "Designed and built a multi-speed fan system with variable speed control, integrating circuit design, motor control, and hardware testing into a functional prototype.",
@@ -265,13 +265,6 @@ function ExperienceSection() {
       behavior: "smooth",
     });
   };
-
-  useEffect(() => {
-    slides.forEach((slide) => {
-      const img = new Image();
-      img.src = slide.src;
-    });
-  }, [slides]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -528,6 +521,13 @@ function ProjectDetail({
     if (!slides.length) return;
     setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
+
+  useEffect(() => {
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.src;
+    });
+  }, [slides]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -892,9 +892,9 @@ function LabQuestStandProject() {
 function MultiSpeedFanProject() {
   return (
     <ProjectDetail
-      category="Arduino"
+      category="Circuit Analysis"
       title="Multi-Speed Fan Project"
-      tags={["Circuit Analysis"]}
+      tags={["Circuit Analysis", "3D Printing", "Research"]}
       summary="Created a simple circuit of a multi-speed fan using a DC motor, 
               small fan blades, and a breadboard, powered by a 9V battery. 
               The circuit has 3 switch paths with different combinations of
