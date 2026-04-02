@@ -123,7 +123,8 @@ function Hero() {
             Welcome to my portfolio showcasing engineering work across CAD,
             manufacturing, and research. I enjoy designing, building, and improving
             solutions to real-world problems, with a strong interest in manufacturing
-            and aerospace applications.
+            and aerospace applications. Currently pursuing a B.S. in Mechanical 
+            Engineering at UC Davis, with an expected graduation in June 2027.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -209,7 +210,7 @@ function ExperienceSection() {
       organization: "Pivotal",
       period: "Summer 2026",
       description:
-        "Joining Pivotal as a Manufacturing Engineering Intern to support aerospace manufacturing processes and production-focused engineering work.",
+        "Joining Pivotal as a Manufacturing Engineering Intern to support aerospace manufacturing processes and production-focused engineering work with eVTOLs.",
     },
     {
       role: "Manufacturing Engineer",
@@ -228,7 +229,7 @@ function ExperienceSection() {
     {
       role: "CAD Manager",
       organization: "Foothill Robotics Club",
-      period: "April 2024 - June 2025",
+      period: "September 2024 - July 2025",
       description:
         "Led CAD-related work for robotics projects, supported part design, and helped organize technical design efforts within the club.",
     },
@@ -522,6 +523,7 @@ function ProjectDetail({
     setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
+  // Preload images for smoother transitions in the gallery and slideshows
   useEffect(() => {
     slides.forEach((slide) => {
       const img = new Image();
@@ -529,6 +531,7 @@ function ProjectDetail({
     });
   }, [slides]);
 
+  // Keyboard navigation for image gallery and slideshows, with Escape to close and Arrow keys to navigate
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (selectedIndex !== null) {
@@ -548,6 +551,7 @@ function ProjectDetail({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, slides]);
 
+  // Prevent background scrolling when an image is open in the gallery, and restore scroll behavior when closed
   useEffect(() => {
     if (selectedIndex !== null) {
       document.body.style.overflow = "hidden";
@@ -678,46 +682,44 @@ function ProjectDetail({
 
         {slides.length > 0 && (
           <div className="mt-12">
-            <div className="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
-                  Presentation Slides
-                </h2>
-                <p className="mt-2 text-sm text-neutral-500">
-                  Here are the presentation slides I created for this project showcasing main details.
-                </p>
-              </div>
+            <div className="mb-5">
+              <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
+                Presentation Slides
+              </h2>
+              <p className="mt-2 text-sm text-neutral-500">
+                Here are the presentation slides I created for this project showcasing main details.
+              </p>
+            </div>
 
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={showPrevSlide}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
-                  aria-label="Previous slide"
-                >
-                  ←
-                </button>
+            <div className="relative mx-auto max-w-4xl">
+              <button
+                type="button"
+                onClick={showPrevSlide}
+                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                aria-label="Previous slide"
+              >
+                ←
+              </button>
 
-                <button
-                  type="button"
-                  onClick={showNextSlide}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
-                  aria-label="Next slide"
-                >
-                  →
-                </button>
+              <button
+                type="button"
+                onClick={showNextSlide}
+                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                aria-label="Next slide"
+              >
+                →
+              </button>
+
+              <div className="rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm">
+                <img
+                  src={slides[activeSlideIndex].src}
+                  alt={slides[activeSlideIndex].alt}
+                  className="mx-auto aspect-[16/9] max-h-[420px] w-full rounded-[1rem] object-contain"
+                />
               </div>
             </div>
 
-            <div className="mx-auto max-w-3xl rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm">
-              <img
-                src={slides[activeSlideIndex].src}
-                alt={slides[activeSlideIndex].alt}
-                className="mx-auto aspect-[16/9] max-h-[500px] w-full rounded-[1rem] object-contain"
-              />
-            </div>
-
-            <div className="mt-4 flex items-center justify-between gap-4">
+            <div className="mx-auto mt-4 flex max-w-4xl items-center justify-between gap-4">
               <p className="text-sm text-neutral-500">
                 {slides[activeSlideIndex].caption}
               </p>
@@ -727,7 +729,7 @@ function ProjectDetail({
               </p>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mx-auto mt-4 flex max-w-4xl flex-wrap gap-2">
               {slides.map((slide, index) => (
                 <button
                   key={slide.src}
@@ -889,6 +891,7 @@ function LabQuestStandProject() {
       
 }
 
+// Multi-Speed Fan Project Detail Page
 function MultiSpeedFanProject() {
   return (
     <ProjectDetail

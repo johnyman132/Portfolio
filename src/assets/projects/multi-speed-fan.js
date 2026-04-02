@@ -51,92 +51,92 @@ export const multiSpeedFanSlides = [
   {
     src: slide1,
     alt: "Multi-speed fan presentation slide 1",
-    caption: "Project overview",
+    caption: "Presentation cover slide",
   },
   {
     src: slide2,
     alt: "Multi-speed fan presentation slide 2",
-    caption: "Circuit design and components",
+    caption: "Key components for circuit design",
   },
   {
     src: slide3,
     alt: "Multi-speed fan presentation slide 3",
-    caption: "Speed control logic",
+    caption: "DC motor selection and specifications",
   },
   {
     src: slide4,
     alt: "Multi-speed fan presentation slide 4",
-    caption: "Final prototype and testing",
+    caption: "Lorentz force and its application in fan design",
   },
   {
     src: slide5,
     alt: "Multi-speed fan presentation slide 5",
-    caption: "Challenges and solutions",
+    caption: "Fan blade rotation and direction",
   },
   {
     src: slide6,
     alt: "Multi-speed fan presentation slide 6",
-    caption: "Future improvements and applications",
+    caption: "Researched blade tilt angles and their impact on airflow",
   },
   {
     src: slide7,
     alt: "Multi-speed fan presentation slide 7",
-    caption: "Project timeline and milestones",
+    caption: "Brief overview of fan blade direction and its impact on airflow, using ceiling fans as an example",
   },
   {
     src: slide8,
     alt: "Multi-speed fan presentation slide 8",
-    caption: "Team members and contributions",
+    caption: "Used CAD model of small fan blade to determine correct orientation and airflow direction",
   },
   {
     src: slide9,
     alt: "Multi-speed fan presentation slide 9",
-    caption: "Budget and resource allocation",
+    caption: "Design plan for circuit, including three speed modes",
   },
   {
     src: slide10,
     alt: "Multi-speed fan presentation slide 10",
-    caption: "Testing results and performance metrics",
+    caption: "Circuit diagram with resistance paths for different speed settings",
   },
   {
     src: slide11,
     alt: "Multi-speed fan presentation slide 11",
-    caption: "User feedback and iterations",
+    caption: "Top view of circuit with low, medium, and high speed paths highlighted",
   },
   {
     src: slide12,
     alt: "Multi-speed fan presentation slide 12",
-    caption: "Final product demonstration",
+    caption: "Side view of circuit showing the current flow paths toggled with switches for different speed settings",
   },
   {
     src: slide13,
     alt: "Multi-speed fan presentation slide 13",
-    caption: "Lessons learned and takeaways",
+    caption: "Modeled a case for the fan using SolidWorks to house components and close off circuit",
   },
   {
     src: slide14,
     alt: "Multi-speed fan presentation slide 14",
-    caption: "Acknowledgments and credits",
+    caption: "Used a DMM to measure voltage in each path and used an audio recording software to measure RPM for each speed setting",
   },
   {
     src: slide15,
     alt: "Multi-speed fan presentation slide 15",
-    caption: "Q&A session",
+    caption: "Attached a piece of tape onto the DC motor and let it hit a pencil, recording the impact of the tape onto the pencil to determine the period of rotation and calculate the RPM for each speed setting",
   },
   {
     src: slide16,
     alt: "Multi-speed fan presentation slide 16",
-    caption: "Contact information and next steps",
+    caption: "Repeated the same process to calculate the medium speed, by recording the period between each impact of the tape and pencil to get RPM",
   },
   {
     src: slide17,
     alt: "Multi-speed fan presentation slide 17",
-    caption: "Additional resources and references",
+    caption: "Repeated a third time to calculate the RPM for the high speed setting",
   },
   {
     src: slide18,
     alt: "Multi-speed fan presentation slide 18",
-    caption: "Closing remarks and thank you",
+    caption: "Created a table and graph to show the linear relationship between voltage and RPM of the DC motor, also showcasing the voltage and RPM values for each speed setting of the fan",
   }
 
 ];
