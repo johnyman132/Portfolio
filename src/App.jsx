@@ -12,6 +12,10 @@ import { backupSensorImages } from "./assets/projects/backup-sensor";
 import { labQuestImages } from "./assets/projects/labquest";
 import { multiSpeedFanImages, multiSpeedFanSlides } from "./assets/projects/multi-speed-fan";
 
+// Import Certification Images
+import cswaCertificate from "./assets/images/Certifications/CSWA-Certificate-Jonathan-Tran.jpg";
+import simulinkFundamentalsCertificate from "./assets/images/Certifications/MATLAB-Simulink-Fundamentals-Certificate.jpg";
+
 // All Project Data and Details
 const allProjects = [
   {
@@ -367,8 +371,12 @@ function ExperienceSection() {
   );
 }
 
-// Skills Section with List of Skills and Tools
+// Skills and Certifications Section
 function SkillsSection() {
+  // Skills Section with List of Skills and Tools
+  const [selectedCertification, setSelectedCertification] = useState(null);
+  const [isCertificateFullscreen, setIsCertificateFullscreen] = useState(false);
+
   const skills = [
     "SolidWorks",
     "Autodesk Fusion 360",
@@ -383,30 +391,207 @@ function SkillsSection() {
     "Leadership",
   ];
 
+  // Certifications Section with Clickable Certificates that open in a modal
+  const certifications = [
+    {
+      title: "Certified SOLIDWORKS Associate (CSWA)",
+      subtitle: "Dassault Systèmes",
+      dateEarned: "Earned: July 2025",
+      image: cswaCertificate,
+      description:
+        "Demonstrates proven competency in SOLIDWORKS fundamentals, including part modeling, assembly creation, and drawing layout. Validates ability to navigate design intent, evaluate feature geometry, and apply engineering principles in 3D CAD workflows.",
+    },
+    {
+      title: "MATLAB Simulink Fundamentals Completion Certificate",
+      subtitle: "MATLAB Coding",
+      dateEarned: "Earned: June 2024",
+      image: simulinkFundamentalsCertificate,
+      description:
+        "Applied fundamental Simulink techniques for real-life dynamic physical systems modeling. Dove into modeling systems with multiple components to deepen understanding of how Simulink runs simulations behind the scenes.",
+    },
+  ];
+
+  const openCertification = (cert) => {
+    setSelectedCertification(cert);
+    setIsCertificateFullscreen(false);
+  };
+
+  const closeCertification = () => {
+    setSelectedCertification(null);
+    setIsCertificateFullscreen(false);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!selectedCertification) return;
+
+      if (event.key === "Escape") {
+        if (isCertificateFullscreen) {
+          setIsCertificateFullscreen(false);
+        } else {
+          closeCertification();
+        }
+      }
+    };
+
+    if (selectedCertification) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [selectedCertification, isCertificateFullscreen]);
+
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-14">
-      <div className="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 md:p-10">
-        <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
-          Skills
-        </h2>
+    <>
+      <section className="mx-auto max-w-6xl px-6 pb-14">
+        <div className="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 md:p-10">
+          <h2 className="text-3xl font-semibold tracking-tight text-neutral-950">
+            Skills
+          </h2>
 
-        <p className="mt-3 max-w-2xl text-base leading-7 text-neutral-600">
-          Tools and technical areas I have developed through coursework, projects,
-          machining, and research experience.
-        </p>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-neutral-600">
+            Tools and technical areas I have developed through coursework, projects,
+            machining, and research experience.
+          </p>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          {skills.map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-700"
-            >
-              {skill}
-            </span>
-          ))}
+          <div className="mt-6 flex flex-wrap gap-3">
+            {skills.map((skill) => (
+              <span
+                key={skill}
+                className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-700"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-10">
+            <h3 className="text-3xl font-semibold text-neutral-950">
+              Certifications
+            </h3>
+            <p className="mt-2 text-md text-neutral-600">
+              Click to view my certifications.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-4">
+              {certifications.map((cert) => (
+                <button
+                  key={cert.title}
+                  type="button"
+                  onClick={() => openCertification(cert)}
+                  className="group flex w-full max-w-md items-center gap-4 rounded-[1.25rem] border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-base font-semibold text-neutral-950">
+                      {cert.title}
+                    </p>
+                    <p className="mt-1 text-sm text-neutral-500">
+                      {cert.subtitle}
+                    </p>
+                    <p className="mt-1 text-sm text-neutral-400">
+                      {cert.dateEarned}
+                    </p>
+                    <p className="mt-3 text-sm font-medium text-neutral-900">
+                      View Certificate →
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {selectedCertification && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-6 py-10 backdrop-blur-sm"
+          onClick={closeCertification}
+        >
+          <div
+            className="relative w-full max-w-5xl rounded-[1.75rem] bg-white p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
+
+              <button
+                type="button"
+                onClick={closeCertification}
+                className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-sm text-neutral-700 transition hover:bg-neutral-100"
+              >
+                Close
+              </button>
+            </div>
+
+            <h3 className="text-2xl font-semibold text-neutral-950">
+              {selectedCertification.title}
+            </h3>
+
+            <p className="mt-1 text-sm text-neutral-500">
+              {selectedCertification.subtitle}
+            </p>
+
+            <p className="mt-1 text-sm text-neutral-400">
+              {selectedCertification.dateEarned}
+            </p>
+
+            <div className="mt-6 rounded-[1.25rem] border border-neutral-200 bg-neutral-50 p-4">
+              <img
+                src={selectedCertification.image}
+                alt={selectedCertification.title}
+                onClick={() => setIsCertificateFullscreen(true)}
+                className="mx-auto max-h-[60vh] w-full cursor-zoom-in object-contain transition duration-200 hover:scale-[1.01]"
+              />
+            </div>
+
+            {selectedCertification.description && (
+              <div className="mt-6">
+                <p className="mt-2 text-base leading-7 text-neutral-700">
+                  {selectedCertification.description}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {selectedCertification && isCertificateFullscreen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 px-6 py-8 backdrop-blur-sm"
+          onClick={() => setIsCertificateFullscreen(false)}
+        >
+          <div
+            className="relative flex h-full w-full max-w-7xl items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setIsCertificateFullscreen(false)}
+              className="absolute right-0 top-0 z-10 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-sm text-white transition hover:bg-white/20"
+            >
+              Close Fullscreen
+            </button>
+
+            <img
+              src={selectedCertification.image}
+              alt={selectedCertification.title}
+              className="max-h-[90vh] w-full object-contain"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -695,7 +880,7 @@ function ProjectDetail({
               <button
                 type="button"
                 onClick={showPrevSlide}
-                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                className="absolute left-4 top-1/2 z-10 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition-all duration-200 ease-out hover:scale-110 hover:shadow-md hover:bg-neutral-50 hover:text-neutral-950"
                 aria-label="Previous slide"
               >
                 ←
@@ -704,7 +889,7 @@ function ProjectDetail({
               <button
                 type="button"
                 onClick={showNextSlide}
-                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition hover:bg-neutral-50 hover:text-neutral-950"
+                className="absolute right-4 top-1/2 z-10 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-700 shadow-sm transition-all duration-200 ease-out hover:scale-110 hover:shadow-md hover:bg-neutral-50 hover:text-neutral-950"
                 aria-label="Next slide"
               >
                 →
@@ -712,19 +897,20 @@ function ProjectDetail({
 
               <div className="rounded-[1.75rem] border border-neutral-200 bg-white p-5 shadow-sm">
                 <img
+                  key={slides[activeSlideIndex].src}
                   src={slides[activeSlideIndex].src}
                   alt={slides[activeSlideIndex].alt}
-                  className="mx-auto aspect-[16/9] max-h-[420px] w-full rounded-[1rem] object-contain"
+                  className="mx-auto aspect-[16/9] max-h-[420px] w-full rounded-[1rem] object-contain transition-opacity duration-300"
                 />
               </div>
             </div>
 
-            <div className="mx-auto mt-4 flex max-w-4xl items-center justify-between gap-4">
-              <p className="text-sm text-neutral-500">
+            <div className="mx-auto mt-4 flex max-w-4xl flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+              <p className="min-w-0 flex-1 text-sm text-neutral-500">
                 {slides[activeSlideIndex].caption}
               </p>
 
-              <p className="text-sm text-neutral-400">
+              <p className="shrink-0 whitespace-nowrap text-sm text-neutral-400 sm:text-right">
                 {activeSlideIndex + 1} / {slides.length}
               </p>
             </div>
