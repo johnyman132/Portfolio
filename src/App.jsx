@@ -1111,39 +1111,64 @@ function MultiSpeedFanProject() {
 function About() {
   return (
     <Layout>
-      <section className="mx-auto max-w-4xl px-6 py-20">
-        <h1 className="text-5xl font-semibold tracking-tight">About</h1>
-        <p className="mt-8 text-lg leading-8 text-neutral-600">
-          Currently pursuing a B.S. in Mechanical Engineering at UC Davis, 
-          with an expected graduation in June 2027. I love to build things and 
-          design my way through solving real world problems! I am interested in 
-          manufacturing and aerospace industries where I can work on meaningful 
-          projects.
-        </p>
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          As a Manufacturing Engineer at the ARMS Laboratory at UC Davis, 
-          I support the research lab by assisting in the development of CNC 
-          automation processes and optimizing machining controls. Additionally, 
-          I support the Drivetrain subteam as a Powertrain Mechanical Engineer 
-          at Formula Racing at UC Davis through planetary gearbox design and 
-          motor component/design drawing analysis using SolidWorks! I am 
-          skilled in SolidWorks and Autodesk Fusion 360, with a strong 
-          foundation in engineering principles and a focus on innovation in 
-          manufacturing systems.
-        </p>
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          I am currently seeking mechanical engineering internship opportunities 
-          where I can grow my skills in designing, prototyping, and manufacturing. 
-          As a motivated student, I’m excited to learn through hands-on experiences 
-          and in a teamwork setting.
-        </p>
-        <p className="mt-6 text-lg leading-8 text-neutral-600">
-          Incoming Manufacturing Engineering Intern @ Pivotal - Summer 2026
-        </p>
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid gap-10 md:grid-cols-2 md:items-start">
+          
+          {/* LEFT: TEXT */}
+          <div>
+            <h1 className="text-4xl font-semibold tracking-tight text-neutral-950">
+              About Me
+            </h1>
+
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
+              Currently pursuing a B.S. in Mechanical Engineering at UC Davis, 
+              with an expected graduation in June 2027. I love to build things and 
+              design my way through solving real world problems! I am interested in 
+              manufacturing and aerospace industries where I can work on meaningful 
+              projects.
+            </p>
+
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
+              As a Manufacturing Engineer at the ARMS Laboratory at UC Davis, 
+              I support the research lab by assisting in the development of CNC 
+              automation processes and optimizing machining controls. Additionally, 
+              I support the Drivetrain subteam as a Powertrain Mechanical Engineer 
+              at Formula Racing at UC Davis through planetary gearbox design and 
+              motor component/design drawing analysis using SolidWorks! I am 
+              skilled in SolidWorks and Autodesk Fusion 360, with a strong 
+              foundation in engineering principles and a focus on innovation in 
+              manufacturing systems.          
+            </p>
+
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
+              I am currently seeking mechanical engineering internship opportunities 
+              where I can grow my skills in designing, prototyping, and manufacturing. 
+              As a motivated student, I’m excited to learn through hands-on experiences 
+              and in a teamwork setting.
+            </p>
+            
+            <p className="mt-6 text-lg leading-8 text-neutral-600">
+              Incoming Manufacturing Engineering Intern @ Pivotal - Summer 2026
+            </p>
+          </div>
+
+          {/* RIGHT: IMAGE */}
+          <div className="flex justify-center md:justify-end">
+            <div className="overflow-hidden rounded-[2rem] border border-neutral-200 bg-neutral-100 shadow-sm">
+              <img
+                src={professionalHeadshot}
+                alt="Jonathan Tran"
+                className="h-[450px] w-[450px] object-cover transition duration-300 hover:scale-[1.02]"
+              />
+            </div>
+          </div>
+
+        </div>
       </section>
     </Layout>
   );
 }
+
 
 // Contact Page with Email and Links to Resume and LinkedIn
 function Contact() {
